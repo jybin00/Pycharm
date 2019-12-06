@@ -1,0 +1,133 @@
+<html>
+<head>
+<title>D&A.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.s1 { color: #6a8759;}
+.s2 { color: #808080;}
+.s3 { color: #cc7832;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+D&A.py</font>
+</center></td></tr></table>
+<pre><span class="s0">print(</span><span class="s1">&quot;postfix 계산기&quot;</span><span class="s0">)  </span><span class="s2"># postfix 계산기 2018170921 조유빈</span>
+
+
+<span class="s3">def </span><span class="s0">op(operand):  </span><span class="s2"># operand 사이의 우선 순위 계산을 위한 함수</span>
+    <span class="s0">j = </span><span class="s4">0  </span><span class="s2"># j 초기화</span>
+    <span class="s3">if </span><span class="s0">operand </span><span class="s3">in </span><span class="s1">'^'</span><span class="s0">:  </span><span class="s2"># 제곱 기호면 3 출력</span>
+        <span class="s0">j = </span><span class="s4">3</span>
+    <span class="s3">elif </span><span class="s0">operand </span><span class="s3">in </span><span class="s0">(</span><span class="s1">'*'</span><span class="s3">, </span><span class="s1">'/'</span><span class="s0">):  </span><span class="s2"># 곱하기 나누기면 2 출력</span>
+        <span class="s0">j = </span><span class="s4">2</span>
+    <span class="s3">elif </span><span class="s0">operand </span><span class="s3">in </span><span class="s0">(</span><span class="s1">'+'</span><span class="s3">, </span><span class="s1">'-'</span><span class="s0">):  </span><span class="s2"># 더하기 뻬기면 1 출력</span>
+        <span class="s0">j = </span><span class="s4">1</span>
+    <span class="s3">elif </span><span class="s0">operand </span><span class="s3">in </span><span class="s0">(</span><span class="s1">'('</span><span class="s3">, </span><span class="s1">')'</span><span class="s0">):  </span><span class="s2"># 괄호면 0 출력</span>
+        <span class="s0">j = </span><span class="s4">0</span>
+    <span class="s3">return </span><span class="s0">j</span>
+
+
+<span class="s3">def </span><span class="s0">top(stack):  </span><span class="s2"># stack의 최상단에 있는 값을 출력하기 위한 함수</span>
+    <span class="s0">j = </span><span class="s4">0</span>
+    <span class="s0">j = op(stack[-</span><span class="s4">1</span><span class="s0">])</span>
+    <span class="s3">return </span><span class="s0">j</span>
+
+
+<span class="s3">def </span><span class="s0">calc(num2</span><span class="s3">, </span><span class="s0">num1</span><span class="s3">, </span><span class="s0">operand):  </span><span class="s2"># 계산을 위한 함수</span>
+    <span class="s3">if </span><span class="s0">operand == </span><span class="s1">'+'</span><span class="s0">:</span>
+        <span class="s3">return </span><span class="s0">num1 + num2</span>
+    <span class="s3">elif </span><span class="s0">operand == </span><span class="s1">'-'</span><span class="s0">:</span>
+        <span class="s3">return </span><span class="s0">num1 - num2</span>
+    <span class="s3">elif </span><span class="s0">operand == </span><span class="s1">'*'</span><span class="s0">:</span>
+        <span class="s3">return </span><span class="s0">num1 * num2</span>
+    <span class="s3">elif </span><span class="s0">operand == </span><span class="s1">'/'</span><span class="s0">:</span>
+        <span class="s3">return </span><span class="s0">num1 / num2</span>
+    <span class="s3">else</span><span class="s0">:</span>
+        <span class="s3">return </span><span class="s0">pow(num1</span><span class="s3">, </span><span class="s0">num2)</span>
+
+
+flag = <span class="s4">1</span>
+<span class="s3">while </span><span class="s0">flag != </span><span class="s4">0</span><span class="s0">:  </span><span class="s2"># 무한 루프</span>
+    <span class="s0">print(</span><span class="s1">&quot;수식을 입력해주세요&quot;</span><span class="s0">)</span>
+    formula = []  <span class="s2"># 수식을 입력 받는 list</span>
+    <span class="s0">formula = list(input().split())</span>
+    print(<span class="s1">&quot;입력된 수식 : &quot;</span><span class="s3">, </span><span class="s0">end=</span><span class="s1">' '</span><span class="s0">)</span>
+    <span class="s3">for </span><span class="s0">i </span><span class="s3">in </span><span class="s0">range(len(formula)):  </span><span class="s2"># 입력된 수식 출력</span>
+        <span class="s0">print(formula[i]</span><span class="s3">, </span><span class="s0">end=</span><span class="s1">' '</span><span class="s0">)</span>
+    print(<span class="s1">&quot; &quot;</span><span class="s0">)</span>
+    stack_num = []  <span class="s2"># 수식 중에서 숫자를 저장하는 stack</span>
+    <span class="s0">stack_operand = []  </span><span class="s2"># 수식 중에서 연산자를 저장하는 stack</span>
+    <span class="s0">stack_calc = []  </span><span class="s2"># 계산한 값을 저장하는 stack</span>
+
+    <span class="s3">for </span><span class="s0">i </span><span class="s3">in </span><span class="s0">range(len(formula)):  </span><span class="s2"># 입력 받은 수식의 길이 만큼 반복한다.</span>
+        <span class="s0">carry = </span><span class="s4">0  </span><span class="s2"># 제곱에 대해서는 'right associative'를 적용하기 위해서 필요한 변수</span>
+        <span class="s3">if </span><span class="s0">formula[i].isdigit() == </span><span class="s4">1</span><span class="s0">:  </span><span class="s2"># 들어온 수식의 i번째 요소가 숫자이면</span>
+            <span class="s0">stack_num.append(formula[i])  </span><span class="s2"># 숫자용 stack에 넣는다.</span>
+            <span class="s3">if </span><span class="s0">i == (len(formula)-</span><span class="s4">1</span><span class="s0">):  </span><span class="s2"># 만약 i가 끝이면,</span>
+                <span class="s3">while True</span><span class="s0">:</span>
+                    <span class="s3">if </span><span class="s0">len(stack_operand) == </span><span class="s4">0</span><span class="s0">:  </span><span class="s2"># 연산자 stack이 비어있지 않을 때</span>
+                        <span class="s3">break</span>
+                    else<span class="s0">:</span>
+                        stack_num.append(stack_operand.pop())  <span class="s2"># 연산자 stack에 저장된 연산자를 숫자용 stack으로 옮긴다.</span>
+
+        <span class="s3">elif </span><span class="s0">len(stack_operand) == </span><span class="s4">0</span><span class="s0">:  </span><span class="s2"># 연산자 stack이 비어있으면 -&gt; 초기에 top operation에 대해 out of range를 막기 위해</span>
+            <span class="s0">stack_operand.append(formula[i])  </span><span class="s2"># 무조건 연산자 stack에 연산자 넣기</span>
+
+        <span class="s3">else</span><span class="s0">:</span>
+            <span class="s3">if </span><span class="s0">formula[i] == </span><span class="s1">'(' </span><span class="s3">or </span><span class="s0">top(stack_operand) &lt; op(formula[i]):  </span><span class="s2"># 수식 요소 중에서 '('나 top 보다 큰 요소가 있으면</span>
+                <span class="s0">stack_operand.append(formula[i])  </span><span class="s2"># 수식 stack에 넣는다.</span>
+            <span class="s3">elif </span><span class="s0">top(stack_operand) &gt;= op(formula[i]):  </span><span class="s2"># 만약 요소가 top 요소 보다 크거나 같으면</span>
+                <span class="s3">while True</span><span class="s0">:  </span><span class="s2"># top 요소가 수식 요소보다 작아질 때까지 연사자 stack에 저장된 요소를 숫자 stack에 빼서 넣는다.</span>
+                    <span class="s3">if </span><span class="s0">formula[i] == </span><span class="s1">'^'</span><span class="s0">:  </span><span class="s2"># 만약에 제곱 연산자가 있으면 그냥 연산자 stack에 넣는다.</span>
+                        <span class="s0">stack_operand.append((formula[i]))  </span><span class="s2"># right associative를 위해!</span>
+                        <span class="s0">carry = </span><span class="s4">1  </span><span class="s2"># 반복문 탈출을 위한 장치</span>
+                        <span class="s3">break</span>
+                    elif <span class="s0">stack_operand[-</span><span class="s4">1</span><span class="s0">] == </span><span class="s1">'('</span><span class="s0">:  </span><span class="s2"># 계속 숫자 스택에 넣다가 연산자 스택의 top이 '('이면 그냥 버린다.</span>
+                        <span class="s0">stack_operand.pop()</span>
+                        <span class="s3">break</span>
+                    else<span class="s0">:  </span><span class="s2"># 위 조건을 모두 만족하지 않으면 연산자 스택에 있는 요소를 숫자 요소에 넣는다.</span>
+                        <span class="s0">stack_num.append(stack_operand.pop())</span>
+                        <span class="s3">if </span><span class="s0">len(stack_operand) == </span><span class="s4">0</span><span class="s0">:  </span><span class="s2"># 연산자 stack이 비어 있으면 멈춘다.</span>
+                            <span class="s3">break</span>
+                        elif <span class="s0">top(stack_operand) &lt; op(formula[i]):  </span><span class="s2"># 계속 옮기다가 수식 요소가 연산자 스택 요소보다 커지면 멈춘다.</span>
+                            <span class="s3">break</span>
+                if <span class="s0">i == (len(formula) - </span><span class="s4">1</span><span class="s0">):  </span><span class="s2"># 만약 i가 마지막이면 -&gt; 위에 있는데 또 넣는 이유 ex) 1 + ( 2 + 3 )인 경우 괄호가</span>
+                    <span class="s3">while True</span><span class="s0">:  </span><span class="s2"># 제일 마지막이여서 이 경우도 고려해줘야함.</span>
+                        <span class="s3">if </span><span class="s0">len(stack_operand) == </span><span class="s4">0</span><span class="s0">:  </span><span class="s2"># 만약 스택이 비어있으면 멈춘다.</span>
+                            <span class="s3">break</span>
+                        else<span class="s0">:</span>
+                            stack_num.append(stack_operand.pop())  <span class="s2"># 그렇지 않으면 수식 스택에 있는 것을 숫자 스택을 옮긴다.</span>
+                <span class="s3">elif </span><span class="s0">formula[i] != </span><span class="s1">')' </span><span class="s3">and </span><span class="s0">carry == </span><span class="s4">0</span><span class="s0">:  </span><span class="s2"># 수식 요소가 ')'가 아니거나 캐리가 0 이면</span>
+                    <span class="s0">stack_operand.append(formula[i])  </span><span class="s2"># 수식 요소를 연산자 스택에 넣는다.</span>
+            <span class="s3">elif </span><span class="s0">formula[i] == </span><span class="s1">')'</span><span class="s0">:  </span><span class="s2"># 수식 요소가 ')'이면</span>
+                <span class="s3">while True</span><span class="s0">:</span>
+                    stack_num.append(stack_operand.pop())  <span class="s2"># 연산자 스택에 있는 연산자를 숫자 스택에 옮긴다.</span>
+                    <span class="s3">if </span><span class="s0">len(stack_operand) == </span><span class="s4">0</span><span class="s0">:  </span><span class="s2"># 연산자 스택이 비어 있으면 멈춘다.</span>
+                        <span class="s3">break</span>
+                    elif <span class="s0">stack_operand[-</span><span class="s4">1</span><span class="s0">] == </span><span class="s1">'('</span><span class="s0">:  </span><span class="s2"># 연산자 스택의 탑이 '('이면 멈춘다.</span>
+                        <span class="s3">break</span>
+
+    <span class="s0">print(</span><span class="s1">&quot;postfix notation&quot;</span><span class="s3">, </span><span class="s0">end=</span><span class="s1">' '</span><span class="s0">)</span>
+    <span class="s3">for </span><span class="s0">i </span><span class="s3">in </span><span class="s0">range(len(stack_num)):</span>
+        print(stack_num[i]<span class="s3">, </span><span class="s0">end=</span><span class="s1">' '</span><span class="s0">)</span>
+    print(<span class="s1">&quot;</span><span class="s3">\n</span><span class="s1">&quot;</span><span class="s0">)</span>
+    print(<span class="s1">&quot;계산 과정</span><span class="s3">\n</span><span class="s1">&quot;</span><span class="s0">)</span>
+
+    <span class="s3">for </span><span class="s0">j </span><span class="s3">in </span><span class="s0">range(len(stack_num)):</span>
+        <span class="s3">if </span><span class="s0">stack_num[j].isdigit() != </span><span class="s4">0</span><span class="s0">:</span>
+            stack_calc.append(stack_num[j])
+            print(stack_calc)
+        <span class="s3">else</span><span class="s0">:</span>
+            print(<span class="s1">'%s %s %s</span><span class="s3">\n</span><span class="s1">' </span><span class="s0">% (stack_calc[-</span><span class="s4">2</span><span class="s0">]</span><span class="s3">, </span><span class="s0">stack_calc[-</span><span class="s4">1</span><span class="s0">]</span><span class="s3">, </span><span class="s0">stack_num[j]))</span>
+            stack_calc.append(calc(float(stack_calc.pop())<span class="s3">, </span><span class="s0">float(stack_calc.pop())</span><span class="s3">, </span><span class="s0">stack_num[j]))</span>
+            print(stack_calc)
+    print(<span class="s1">'</span><span class="s3">\n</span><span class="s1">따라서 답은 %f</span><span class="s3">\n</span><span class="s1">' </span><span class="s0">% float(stack_calc[-</span><span class="s4">1</span><span class="s0">]))</span>
+
+</pre>
+</body>
+</html>
