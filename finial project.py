@@ -60,15 +60,18 @@ def num(graph, start_node):
     return numvalue
 
 
-def low(graph):
+def low(graph, num, start_node):
     visit = list()
     stack = list()
-    low_value = list()
+    low_value = {}
+
+    stack.append(start_node)
 
     while stack:
         node = stack.pop()
+        low_value[node] = num.get[node]
         if node not in visit:
-            visit.extend([node, counter])
+            visit.extend([node])
             stack.extend(graph[node])
 
     return low_value
