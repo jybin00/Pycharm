@@ -56,9 +56,10 @@ graph = {'A': ['B', 'C'],
 #     return visit
 
 
-def dfs(graph, start_node):
+def articulation(graph, start_node):
     visit = list()
     stack = list()
+    low = list()
     counter = 0
 
     stack.append(start_node)
@@ -71,7 +72,6 @@ def dfs(graph, start_node):
             stack.extend(graph[node])
 
     return visit
-
 
 
 # def AssignNum(graph, start_node):
@@ -90,7 +90,7 @@ for key, value in graph.items():
     print(key, ":", value)
 print()
 print("Num value\n")
-for i in range(0, len(dfs(graph, 'A')), 2):
-    print(dfs(graph, 'A')[i:i+2])
+for i in range(0, len(articulation(graph, 'A')), 2):
+    print(articulation(graph, 'A')[i:i+2])
 
 
