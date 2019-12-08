@@ -64,13 +64,15 @@ def dfs(graph, start_node):
     stack.append(start_node)
 
     while stack:
-        counter = counter + 1
         node = stack.pop()
         if node not in visit:
+            counter = counter + 1
             visit.extend([node, counter])
             stack.extend(graph[node])
 
     return visit
+
+
 
 # def AssignNum(graph, start_node):
 #     num = list()
@@ -81,12 +83,14 @@ def dfs(graph, start_node):
 #     visited[node] = Ture
 
 
-print(type(graph))
+print("Original graph")
 print()
 
 for key, value in graph.items():
     print(key, ":", value)
 print()
-print(dfs(graph, 'A'))
-for i in dfs(graph, 'A'):
-    print(i, i)
+print("Num value\n")
+for i in range(0, len(dfs(graph, 'A')), 2):
+    print(dfs(graph, 'A')[i:i+2])
+
+
