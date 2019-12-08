@@ -40,13 +40,36 @@ graph1 = {'A': ['B', 'C'],
           'J': ['H', 'I']}
 
 
+graph2 = {'A': ['B', 'C'],
+          'B': ['A', 'C', 'D'],
+          'C': ['A', 'B', 'G'],
+          'D': ['B', 'E'],
+          'E': ['D', 'F'],
+          'F': ['E'],
+          'G': ['C', 'I'],
+          'H': ['I'],
+          'I': ['G', 'H', 'J'],
+          'J': ['I']}
+
+graph3 = {'A': ['B'],
+          'B': ['A', 'C', 'K'],
+          'C': ['B', 'G', 'D'],
+          'D': ['C', 'E', 'I'],
+          'E': ['D', 'F', 'H'],
+          'F': ['E'],
+          'G': ['C'],
+          'H': ['D', 'E'],
+          'I': ['D', 'J'],
+          'J': ['I'],
+          'K': ['B']}
+
+
 def num(graph, start_node):
     visit = list()
     stack = list()
     articulation_point = set()
     num_value = dict()
     low_value = dict()
-    parent = dict()
     counter = 0
 
     stack.append(start_node)
@@ -66,33 +89,45 @@ def num(graph, start_node):
             if num_value.get(val) > num_value.get(k):
                 if low_value.get(val) >= num_value.get(k):
                     articulation_point.add(k)
+                print(low_value.get(k), low_value.get(val), k, val)
                 low_value[k] = min(low_value.get(k), low_value.get(val))
+                print("low_value", k, low_value[k])
             else:
                 if num_value.get(k) > num_value.get(val):
+                    print(low_value.get(k), num_value.get(val))
                     low_value[k] = min(low_value.get(k), num_value.get(val))
+                    print("low_value2", k, low_value[k])
 
     return num_value, low_value, articulation_point
 
 
-x, y, z = num(graph1, 'A')
-print("Original graph")
-print()
+def articulation(graph):
+    x, y, z = num(graph, 'C')
+    print("Original graph")
+    print()
 
-for key, value in graph1.items():
-    print(key, ":", value)
-print()
+    for key, value in graph.items():
+        print(key, ":", value)
+    print()
 
-print("Num value\n")
-for i, item in x.items():
-    print(i, ":", item)
-print()
+    print("Num value\n")
+    for i, item in x.items():
+        print(i, ":", item)
+    print()
 
-print("Low value\n")
-for j, item in y.items():
-    print(j, ":", item)
-print()
+    print("Low value\n")
+    for j, item in y.items():
+        print(j, ":", item)
+    print()
 
-print("articulation points are", z)
+    print("articulation points are", z)
+
+
+articulation(graph1)
+
+articulation(graph2)
+
+articulation(graph3)
 
 
 
