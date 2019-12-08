@@ -41,24 +41,9 @@ graph = {'A': ['B', 'C'],
          'J': ['H', 'I']}
 
 
-# def bfs(graph, start_node):
-#     visit = list()
-#     q = Queue()
-#
-#     q.put(start_node)
-#
-#     while q.qsize() > 0:
-#         node = q.get()
-#         if node not in visit:
-#             visit.append(node)
-#             for nextNode in graph[node]:
-#                 q.put(nextNode)
-#     return visit
-
-
 def num(graph, start_node):
     visit = list()
-    numvalue = list()
+    numvalue = {}
     stack = list()
     counter = 0
 
@@ -69,27 +54,20 @@ def num(graph, start_node):
         if node not in visit:
             counter = counter + 1
             visit.extend(node)
-            numvalue.extend([node, counter])
+            numvalue[node] = counter
             stack.extend(graph[node])
 
     return numvalue
 
 
-def low(graph, start_node):
+def low(graph):
     visit = list()
     stack = list()
     low_value = list()
-    counter = 0
-    counter2 = 1
-
-    stack.append(start_node)
 
     while stack:
         node = stack.pop()
-        low_value.extend([node, counter2])
         if node not in visit:
-            counter = counter + 1
-            counter2 = counter2 + 1
             visit.extend([node, counter])
             stack.extend(graph[node])
 
@@ -112,9 +90,10 @@ for key, value in graph.items():
     print(key, ":", value)
 print()
 print("Num value\n")
-for i in range(0, len(num(graph, 'A')), 2):
-    print(num(graph, 'A')[i:i+2])
+for i, item in num(graph, 'A').items():
+    print(i,":", item)
+# for i in range(0, len(num(graph, 'A')), 2):
+#     print(num(graph, 'A')[i:i+2])
 
-print(low(graph, 'A'))
 
 
