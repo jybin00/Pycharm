@@ -27,24 +27,26 @@
 
 # undirected graph
 
-from queue import Queue
 
-graph = {'A': ['B', 'C'],
-         'B': ['A', 'D', 'E'],
-         'C': ['A', 'D', 'H'],
-         'D': ['B', 'C'],
-         'E': ['F', 'G'],
-         'F': ['E', 'G'],
-         'G': ['E', 'F'],
-         'H': ['C', 'I', 'J'],
-         'I': ['H', 'J'],
-         'J': ['H', 'I']}
+graph1 = {'A': ['B', 'C'],
+          'B': ['A', 'D', 'E'],
+          'C': ['A', 'D', 'H'],
+          'D': ['B', 'C'],
+          'E': ['F', 'G'],
+          'F': ['E', 'G'],
+          'G': ['E', 'F'],
+          'H': ['C', 'I', 'J'],
+          'I': ['H', 'J'],
+          'J': ['H', 'I']}
 
 
 def num(graph, start_node):
     visit = list()
-    numvalue = {}
     stack = list()
+    stack1 = list()
+    num_value = dict()
+    low_value = dict()
+    parent = dict()
     counter = 0
 
     stack.append(start_node)
@@ -54,27 +56,54 @@ def num(graph, start_node):
         if node not in visit:
             counter = counter + 1
             visit.extend(node)
-            numvalue[node] = counter
+            num_value[node] = counter
             stack.extend(graph[node])
 
-    return numvalue
+    low_value[start_node] = num_value.get(start_node)
+    for k, val in graph.items():
+        if num_value.get(val) > num_value.get(k):
+            if low_value.get(val) >= num_value.get(start_node):
+                print("%s is an articulation point\n" % low_value.keys())
+            low_value[start_node] = min(low_value.get(start_node), low_value.get(val))
+        else:
+            if num.get(start_node) < num.get(val):
+                low_value[start_node] = min(low_value.get(start_node), num_value.get(val))
+
+    return num_value
 
 
-def low(graph, num, start_node):
-    visit = list()
-    stack = list()
-    low_value = {}
+# def parents(graph, start_node):
+#     visited = {}
+#     parent = {}
+#     stack = list()
+#
+#     stack.append(start_node)
+#
+#     while stack:
+#         v = stack.pop()
+#         if visited.get(stack) is not True:
+#             visited[i] = True
+#             parent[i] =
+#             stack.extend(graph[v])
+#
+#     return parent
 
-    stack.append(start_node)
-
-    while stack:
-        node = stack.pop()
-        low_value[node] = num.get[node]
-        if node not in visit:
-            visit.extend([node])
-            stack.extend(graph[node])
-
-    return low_value
+#
+# def low(graph, num_value, start_node):
+#     low_value = dict()
+#
+#     low_value[start_node] = num_value.get(start_node)
+#     for key, value in graph.items():
+#         if num_value.get(value) > num_value.get(key):
+#             low(graph, num_value, value)
+#             if low_value.get(value) >= num_value.get(start_node):
+#                 print("%s is an articulation point\n" % low_value.keys())
+#             low_value[start_node] = min(low_value.get(start_node), low_value.get(value))
+#         else:
+#             if num.get(start_node) < num.get(value):
+#                 low_value[start_node] = min(low_value.get(start_node), num_value.get(value))
+#
+#     return low_value
 
 
 # def AssignNum(graph, start_node):
@@ -85,18 +114,20 @@ def low(graph, num, start_node):
 #     num[node] = counter++
 #     visited[node] = Ture
 
+x = num(graph1, 'A')
 
 print("Original graph")
 print()
-
-for key, value in graph.items():
+for key, value in graph1.items():
     print(key, ":", value)
 print()
 print("Num value\n")
-for i, item in num(graph, 'A').items():
-    print(i,":", item)
-# for i in range(0, len(num(graph, 'A')), 2):
-#     print(num(graph, 'A')[i:i+2])
+for i, item in x.items():
+    print(i, ":", item)
+print(type(num(graph1, 'B')))
+
+# print(low(graph1, num(graph1, 'A'), 'A'))
+
 
 
 
