@@ -56,23 +56,44 @@ graph = {'A': ['B', 'C'],
 #     return visit
 
 
-def articulation(graph, start_node):
+def num(graph, start_node):
     visit = list()
+    numvalue = list()
     stack = list()
-    low = list()
     counter = 0
 
     stack.append(start_node)
 
     while stack:
         node = stack.pop()
-        low.extend([node, counter])
         if node not in visit:
             counter = counter + 1
+            visit.extend(node)
+            numvalue.extend([node, counter])
+            stack.extend(graph[node])
+
+    return numvalue
+
+
+def low(graph, start_node):
+    visit = list()
+    stack = list()
+    low_value = list()
+    counter = 0
+    counter2 = 1
+
+    stack.append(start_node)
+
+    while stack:
+        node = stack.pop()
+        low_value.extend([node, counter2])
+        if node not in visit:
+            counter = counter + 1
+            counter2 = counter2 + 1
             visit.extend([node, counter])
             stack.extend(graph[node])
 
-    return visit
+    return low_value
 
 
 # def AssignNum(graph, start_node):
@@ -91,7 +112,9 @@ for key, value in graph.items():
     print(key, ":", value)
 print()
 print("Num value\n")
-for i in range(0, len(articulation(graph, 'A')), 2):
-    print(articulation(graph, 'A')[i:i+2])
+for i in range(0, len(num(graph, 'A')), 2):
+    print(num(graph, 'A')[i:i+2])
+
+print(low(graph, 'A'))
 
 
