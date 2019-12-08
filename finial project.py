@@ -66,6 +66,7 @@ def articulation(graph, start_node):
 
     while stack:
         node = stack.pop()
+        low.extend([node, counter])
         if node not in visit:
             counter = counter + 1
             visit.extend([node, counter])
