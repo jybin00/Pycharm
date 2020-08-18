@@ -64,44 +64,40 @@ graph3 = {'A': ['B'],
           'K': ['B']}
 
 
-def num(graph, start_node):
-    visit = list()
-    stack = list()
-    articulation_point = set()
-    num_value = dict()
-    low_value = dict()
-    counter = 0
+def num(graph, start_node):  # ariculation 포인트를 찾는 함수
+    visit = list()  # 방문한 곳을 기록하는 스택
+    stack = list()  # 반복 작업을 위한 스택
+    articulation_point = set()  # 단절점을 저장하는 집합
+    num_value = dict()  # num 값을 저장하는 딕셔너리
+    low_value = dict()  # low 값을 저장하는 딕셔너리
+    counter = 0  # num 값용 카운터
 
-    stack.append(start_node)
+    stack.append(start_node)  # 시작점 스택에 넣기
 
     while stack:
-        node = stack.pop()
-        if node not in visit:
+        node = stack.pop()  # 스택에 있는 요소 꺼내기
+        if node not in visit:  # 노드에 방문한 적이 없으면
             counter = counter + 1
-            visit.extend(node)
-            num_value[node] = counter
-            stack.extend(graph[node])
+            visit.extend(node)  # 방문한 노드에 넣기
+            num_value[node] = counter  # num값 넣기
+            stack.extend(graph[node])  # 방문한 노드 주변 노드 가져오기
 
-    for low_val in graph:
-        low_value[low_val] = num_value.get(low_val)
-    for k, value in graph.items():
-        for val in value:
-            if num_value.get(val) > num_value.get(k):
-                if low_value.get(val) >= num_value.get(k):
-                    articulation_point.add(k)
-                print(low_value.get(k), low_value.get(val), k, val)
+    for low_val in graph:  # 모든 그래프 노드에 대해
+        low_value[low_val] = num_value.get(low_val)  # 자신의 num값을 low값으로 초기화
+    for k, value in graph.items():  # 그래프에 있는 key값과 value값에 대해
+        for val in value:  # 하나의 키 안에 있는 value 값을 가져와서
+            if num_value.get(val) > num_value.get(k):  # 만약에 주변 노드의 num값이 키의 num보다 크면
+                if low_value.get(val) >= num_value.get(k):  # 만약 주변 노드의 low값이 키의 num보다 크면
+                    articulation_point.add(k)  # articulation point
                 low_value[k] = min(low_value.get(k), low_value.get(val))
-                print("low_value", k, low_value[k])
             else:
-                if num_value.get(k) > num_value.get(val):
-                    print(low_value.get(k), num_value.get(val))
-                    low_value[k] = min(low_value.get(k), num_value.get(val))
-                    print("low_value2", k, low_value[k])
+                if num_value.get(k) > num_value.get(val): # 만약 역방향이면 즉, 값이 작아지는 방향
+                    low_value[k] = min(low_value.get(k), num_value.get(val)) # 키의 low와 주변의 num의 미니멈
 
     return num_value, low_value, articulation_point
 
 
-def articulation(graph):
+def articulation(graph):  # 결과를 표현하기 위한 함수
     x, y, z = num(graph, 'C')
     print("Original graph")
     print()
