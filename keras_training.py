@@ -20,6 +20,9 @@ test_labels = to_categorical(test_labels)
 # 모델 정의하기 (여기에서는 Sequential 클래스 사용)
 model = models.Sequential()
 model.add(layers.Dense(512, activation='relu', input_shape=(28 * 28,)))
+model.add(layers.Dense(256, activation='relu'))
+model.add(layers.Dense(256, activation='relu'))
+model.add(layers.Dense(256, activation='relu'))
 model.add(layers.Dense(10, activation='softmax'))
 
 # 모델 컴파일 하기
@@ -28,8 +31,20 @@ model.compile(optimizer='rmsprop',
                 metrics=['accuracy'])
 
 # fit() 메서드로 모델 훈련 시키기
-model.fit(train_images, train_labels, epochs=5, batch_size=128)
+model.fit(train_images, train_labels, epochs=10, batch_size=128)
 
 # 테스트 데이터로 정확도 측정하기
 test_loss, test_acc = model.evaluate(test_images, test_labels)
 print('test_acc: ', test_acc)
+
+
+
+from keras.models import load_model
+
+model.save('my_model.h5')  # creates a HDF5 file 'my_model.h5'
+del model  # deletes the existing model
+
+# returns a compiled model
+# identical to the previous one
+model = load_model('my_model.h5')
+
