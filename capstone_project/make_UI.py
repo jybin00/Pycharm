@@ -23,6 +23,7 @@ class MyApp(QMainWindow):
         self.btn1.clicked.connect(self.start)
 
         self.btn2 = QPushButton('단속 종료', self)
+        self.btn2.setToolTip('단속을 종료하려면 버튼을 누르세요')
         self.btn2.move(100,20)
         self.btn2.resize(self.btn2.sizeHint())
         self.btn2.clicked.connect(self.stop)
