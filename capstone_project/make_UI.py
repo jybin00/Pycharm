@@ -1,4 +1,4 @@
-import sys, cv2, numpy, time
+import sys, cv2, numpy, time, numpy
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -14,17 +14,16 @@ class MyApp(QMainWindow):
         self.statusBar().showMessage(datetime.toString('yyyy년 MM월 dd일 hh:mm:ss'))
         # 툴팁
         QToolTip.setFont(QFont('SansSerif', 10))
-        self.setToolTip('단속을 시작하려면 버튼을 누르세요')
         # 버튼
         self.btn1 = QPushButton('단속 시작', self)
         self.btn1.setToolTip('단속을 시작하려면 버튼을 누르세요')
         self.btn1.move(20,20)
         self.btn1.resize(self.btn1.sizeHint())
-        self.btn1.clicked.connect(self.start)
+        self.btn1.clicked.connect(self.bnt1_push())
 
         self.btn2 = QPushButton('단속 종료', self)
         self.btn2.setToolTip('단속을 종료하려면 버튼을 누르세요')
-        self.btn2.move(100,20)
+        self.btn2.move(120,20)
         self.btn2.resize(self.btn2.sizeHint())
         self.btn2.clicked.connect(self.stop)
         # 감도 조절 slider
@@ -37,11 +36,7 @@ class MyApp(QMainWindow):
         self.sldr.valueChanged.connect(self.setFps)
 
         #단속영상
-        self.cpt = cv2.VideoCapture(0)
-        self.fps = 24
-        _, self.img_o = self.cpt.read()
-        self.img_o = cv2.cvtColor(self.img_o, cv2.COLOR_RGB2GRAY)
-        cv2.imwrite('img_o.jpg',self.img_o)
+
       
         self.cnt = 0
         self.frame = QLabel(self)
@@ -87,10 +82,24 @@ class MyApp(QMainWindow):
         err = numpy.sum((img_o.astype("float")-img_p.astype("float")) ** 2)
         err /= float(img_o.shape[0] * img_p.shape[1])
 
+    def bnt1_push(self):
+        self.videoo()
+
+    def videoo(self):
+        cap = cv2.VideoCapture(0)
+        while True:
+            ret, img_o = cap.read()
+            img_o = cv2.cvtColor(img_o, cv2.COLOR_RGB2GRAY)
+            cv2.imshow('test', img_o)
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = MyApp()
     sys.exit(app.exec_())
+
+
+
 
 
 #웹캠 연결 코드 참조
