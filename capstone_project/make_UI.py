@@ -23,13 +23,13 @@ class MyApp(QMainWindow):
         self.btn1.clicked.connect(self.start)
 
         self.btn2 = QPushButton('단속 종료', self)
-        self.btn2.move(50,20)
+        self.btn2.move(100,20)
         self.btn2.resize(self.btn2.sizeHint())
         self.btn2.clicked.connect(self.stop)
         # 감도 조절 slider
         self.sldr = QSlider(Qt.Horizontal, self)
         self.sldr.resize(200,25)
-        self.sldr.move(80,20)
+        self.sldr.move(20,50)
         self.sldr.setMinimum(1)
         self.sldr.setMaximum(30)
         self.sldr.setValue(24)
@@ -52,7 +52,7 @@ class MyApp(QMainWindow):
         self.setWindowIcon(QIcon('am.png'))
         self.setGeometry(300, 300, 300, 200)
         self.move(300, 300)
-        self.resize(600, 400)
+        self.resize(800, 600)
         self.show()
 
     def setFps(self):
