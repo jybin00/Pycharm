@@ -1,1 +1,3 @@
 *.weights
+~/Pycharm/capstone_project/yolov4-custom_best.weights
+yolov4-custom_best.weights
