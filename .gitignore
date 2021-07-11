@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 .idea/
 __pycache__/
 my_model.h5
 venv/
+=======
+>>>>>>> e63fadb212f2c4d7fa17d79ed035a2f3d20006f6
 *.weights
 ~/Pycharm/capstone_project/yolov4-custom_best.weights
 yolov4-custom_best.weights
