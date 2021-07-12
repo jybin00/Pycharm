@@ -3,7 +3,19 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from threading import Thread
 import time
- 
+import numpy as np
+
+# YOLO 가중치 파일과 CFG 파일 로드
+YOLO_net = cv2.dnn.readNet("yolov4-custom_best.weights", "yolov4-obj.cfg")
+
+# YOLO NETWORK 재구성
+classes = []
+with open("obj.names", "r") as f:
+    classes = [line.strip() for line in f.readlines()]
+layer_names = YOLO_net.getLayerNames()
+output_layers = [layer_names[i[0] - 1] for i in YOLO_net.getUnconnectedOutLayers()]
+
+
 class video(QObject):
  
     sendImage = pyqtSignal(QImage)
@@ -12,36 +24,22 @@ class video(QObject):
         super().__init__()
         self.widget = widget
         self.size = size
-        self.sendImage.connect(self.widget.recvImage)        
-                 
-        files = ['haarcascade_fullbody.xml',
-                'haarcascade_upperbody.xml',
-                'haarcascade_lowerbody.xml',
-                'haarcascade_frontalface_default.xml',
-                'haarcascade_eye.xml',
-                'haarcascade_eye_tree_eyeglasses.xml',
-                'haarcascade_smile.xml']
-      
-        self.filters = []
-        for i in range(len(files)):
-            filter = cv2.CascadeClassifier(files[i])
-            self.filters.append(filter)     
- 
-        self.option = [False for i in range(len(files))]
-        self.color = [QColor(255,0,0), QColor(255,128,0), QColor(255,255,0), QColor(0,255,0), QColor(0,0,255), QColor(0,0,128), QColor(128,0,128)]        
-             
+        self.sendImage.connect(self.widget.recvImage)
+
+
     def setOption(self, option):
         self.option = option        
  
     def startCam(self):
         try:
-            self.cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+            self.cap = cv2.VideoCapture(0)
         except Exception as e:
             print('Cam Error : ', e)
         else:
             self.bThread = True
             self.thread = Thread(target=self.threadFunc)
             self.thread.start()
+            print("단속 시작")
  
     def stopCam(self):        
         self.bThread = False
@@ -56,28 +54,61 @@ class video(QObject):
     def threadFunc(self):
         while self.bThread:
             ok, frame = self.cap.read()
-            if ok:
-                # detect image                
-                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                for i in range(len(self.filters)):
-                    if self.option[i]:
-                        detects = self.filters[i].detectMultiScale(gray, 1.1, 5)
-                        for (x, y, w, h) in detects:
-                            r = self.color[i].red()
-                            g = self.color[i].green()
-                            b = self.color[i].blue()
-                            cv2.rectangle(frame, (x,y),(x+w,y+h), (b,g,r), 2)              
+            h, w, c = frame.shape
+
+            # YOLO 입력
+            blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
+            YOLO_net.setInput(blob)
+            outs = YOLO_net.forward(output_layers)
+
+            class_ids = []
+            confidences = []
+            boxes = []
+
+            for out in outs:
+
+                for detection in out:
+
+                    scores = detection[5:]
+                    class_id = np.argmax(scores)
+                    confidence = scores[class_id]
+
+                    if confidence > 0.5:
+                        print('flag1')
+                        # Object detected
+                        center_x = int(detection[0] * w)
+                        center_y = int(detection[1] * h)
+                        dw = int(detection[2] * 2 * w / 3)
+                        dh = int(detection[3] * 2 * h / 3)
+                        # Rectangle coordinate
+                        print('flag2')
+                        x = int(center_x - dw / 2)
+                        y = int(center_y - dh / 2)
+                        boxes.append([x, y, dw, dh])
+                        confidences.append(float(confidence))
+                        class_ids.append(class_id)
+            indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.8, 0.8)
+
+            for i in range(len(boxes)):
+                if i in indexes:
+                    x, y, w, h = boxes[i]
+                    label = str(classes[class_ids[i]])
+                    score = '%2f' % confidences[i]
+                    print(x, y, label, score)
+
+                    # 경계상자와 클래스 정보 이미지에 입력
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 5)
+                    cv2.putText(frame, label + str(score), (x, y - 20), cv2.FONT_ITALIC, 0.5, (255, 255, 255), 1)
+                    print("번호판 감지")
+
+            bytesPerLine = w * c
+            img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            Img = QImage(img.data, w, h, bytesPerLine, QImage.Format_RGB888)
+            resizeImg = Img.scaled(self.size.width(), self.size.height(), Qt.KeepAspectRatio)
+            self.sendImage.emit(resizeImg)
+            print(type(resizeImg))
+
+            if cv2.waitKey(33) > 0:
+                break
  
-                # create image
-                rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                h, w, ch = rgb.shape
-                bytesPerLine = ch * w
-                img = QImage(rgb.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                resizedImg = img.scaled(self.size.width(), self.size.height(), Qt.KeepAspectRatio)
-                self.sendImage.emit(resizedImg)
-            else:
-                print('cam read error')
- 
-            time.sleep(0.01)
- 
-        print('thread finished')
+        print('단속 종료')

@@ -10,7 +10,7 @@ class CWidget(QWidget):
  
     def __init__(self):
         super().__init__()    
-        size = QSize(600,500)
+        size = QSize(800,400)
         self.initUI(size)
         self.video = video(self, QSize(self.frm.width(), self.frm.height()))
  
@@ -44,8 +44,8 @@ class CWidget(QWidget):
             self.video.startCam()
         else:
             self.btn.setText('단속 시작')
-            self.video.stopCam()            
- 
+            self.video.stopCam()
+    '''
     def detectOption(self, id):
         if self.grp.button(id).isChecked():
             self.bDetect[id] = True
@@ -53,12 +53,12 @@ class CWidget(QWidget):
             self.bDetect[id] = False
         #print(self.bDetect)
         self.video.setOption(self.bDetect)
- 
-    def recvImage(self, img):        
+    '''
+    def recvImage(self, img):
         self.frm.setPixmap(QPixmap.fromImage(img))
- 
+
     def closeEvent(self, e):
-        self.video.stopCam()  
+        self.video.stopCam()
  
  
 if __name__ == '__main__':
