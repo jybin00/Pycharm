@@ -10,7 +10,7 @@ class CWidget(QWidget):
  
     def __init__(self):
         super().__init__()    
-        size = QSize(800,400)
+        size = QSize(800, 400)
         self.initUI(size)
         self.video = video(self, QSize(self.frm.width(), self.frm.height()))
  

@@ -1,6 +1,10 @@
 
 import cv2
 import numpy as np
+from PyQt5 import QtCore, QtWidgets, QtGui
+
+class ShowVideo(QtCore,QObject):
+
 
 # 웹캠 신호 받기
 VideoSignal = cv2.VideoCapture(0)

@@ -24,8 +24,7 @@ class video(QObject):
         super().__init__()
         self.widget = widget
         self.size = size
-        self.sendImage.connect(self.widget.recvImage)
-
+        #self.sendImage.connect(self.widget.recvImage)
 
     def setOption(self, option):
         self.option = option        
@@ -44,6 +43,7 @@ class video(QObject):
     def stopCam(self):        
         self.bThread = False
         bopen = False
+        print(bopen)
         try:
             bopen = self.cap.isOpened()
         except Exception as e:
@@ -74,14 +74,12 @@ class video(QObject):
                     confidence = scores[class_id]
 
                     if confidence > 0.5:
-                        print('flag1')
                         # Object detected
                         center_x = int(detection[0] * w)
                         center_y = int(detection[1] * h)
                         dw = int(detection[2] * 2 * w / 3)
                         dh = int(detection[3] * 2 * h / 3)
                         # Rectangle coordinate
-                        print('flag2')
                         x = int(center_x - dw / 2)
                         y = int(center_y - dh / 2)
                         boxes.append([x, y, dw, dh])
@@ -102,13 +100,13 @@ class video(QObject):
                     print("번호판 감지")
 
             bytesPerLine = w * c
-            img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            Img = QImage(img.data, w, h, bytesPerLine, QImage.Format_RGB888)
-            resizeImg = Img.scaled(self.size.width(), self.size.height(), Qt.KeepAspectRatio)
-            self.sendImage.emit(resizeImg)
-            print(type(resizeImg))
-
-            if cv2.waitKey(33) > 0:
+            #img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            cv2.imshow("단속화면", frame)
+            #Img = QImage(img.data, w, h, bytesPerLine, QImage.Format_RGB888)
+            #resizeImg = Img.scaled(self.size.width(), self.size.height(), Qt.KeepAspectRatio)
+            #self.sendImage.emit(resizeImg)
+            time.sleep(0.01)
+            if self.bThread == False:
                 break
- 
+
         print('단속 종료')
