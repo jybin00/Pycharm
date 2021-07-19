@@ -40,19 +40,42 @@ for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
     new_im.save(file+"f.jpg")
 print("all done!")
 
-for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/test/*.txt'):
+import PIL
+import glob
+import os
+import re
+from PIL import Image, ImageOps, ImageFilter
+for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/test/IMG_6876.txt'):
     file, ext = os.path.splitext(imfile)
     print("infile:"+imfile)
     open_file = open(imfile, 'r')
-    read_file = open_file.read()
-    print(read_file)
-    print(read_file[0:2]+str(1-float(read_file[2:10]))+read_file[10:])
+    # read_file = open_file.read()
+    # print(read_file)
+    newfile = open(file + "f.txt", 'w')
+    while True:
+        line = open_file.readline()
+        if not line: break
+        print(line)
+        regex = re.compile('15')
+        change_number = regex.sub('0', line)
+        print(change_number)
+        new_line = (change_number[0:1] + str(1 - round(float(change_number[2:10]), 7)) + change_number[10:])
+        newfile.write(new_line)
+        print(new_line)
+    newfile.close()
+    while True:
+        line2 = open_file.readline()
+        if not line2: break
+        print(line2)
+        new_line = (line[0:2] + str(1 - float(line[2:10])) + line[10:])
+        print(new_line)
+    new_line=(read_file[0:2]+str(1-float(read_file[2:10]))+read_file[10:])
     regex = re.compile('15')
     read_file = regex.sub('0', read_file)
     write_file = open(imfile, 'w')
     write_file.write(read_file)
-    newfile = open(file+"f.txt",'w')
-    newfile.write(read_file)
+    newfile = open(file+"f.txt", 'w')
+    newfile.write(new_line)
 print("all done")
 
 # 이미지 불러오기
