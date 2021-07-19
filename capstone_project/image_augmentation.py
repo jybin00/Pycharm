@@ -16,7 +16,6 @@ for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
 for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/test/140.txt'):
     file, ext = os.path.splitext(imfile)
     open_file = open(imfile, 'r')
-    #write_file = open(file + ".txt", 'w')
     newfile = open(file + "eng.txt", 'w')
     while True:
         line = open_file.readline()
@@ -25,12 +24,18 @@ for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
         regex = re.compile('15')
         changed_line = regex.sub('0', line, count=1)
         print(changed_line)
-        #write_file.write(changed_line)
         newfile.write(changed_line)
-    print(file + " done!")
+    newfile.close()
+    engfile = open(file+"eng.txt", 'r')
+    write_file = open(file + ".txt", 'w')
+    while True:
+        line = engfile.readline()
+        if not line: break
+        write_file.write(line)
     open_file.close()
     write_file.close()
-    newfile.close()
+
+    print(file + " done!")
 
 print("그레이 스케일 증강 완료!")
 
