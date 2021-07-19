@@ -17,21 +17,21 @@ output_layers = [layer_names[i[0] - 1] for i in YOLO_net.getUnconnectedOutLayers
 
 
 class video(QObject):
- 
+
     sendImage = pyqtSignal(QImage)
  
     def __init__(self, widget, size):
         super().__init__()
         self.widget = widget
         self.size = size
-        #self.sendImage.connect(self.widget.recvImage)
+        self.sendImage.connect(self.widget.recvImage)
 
     def setOption(self, option):
         self.option = option        
  
     def startCam(self):
         try:
-            self.cap = cv2.VideoCapture(0)
+            pass
         except Exception as e:
             print('Cam Error : ', e)
         else:
@@ -53,6 +53,7 @@ class video(QObject):
  
     def threadFunc(self):
         while self.bThread:
+            self.cap = cv2.VideoCapture(0)
             ok, frame = self.cap.read()
             h, w, c = frame.shape
 
@@ -100,11 +101,11 @@ class video(QObject):
                     print("번호판 감지")
 
             bytesPerLine = w * c
-            #img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            cv2.imshow("단속화면", frame)
-            #Img = QImage(img.data, w, h, bytesPerLine, QImage.Format_RGB888)
-            #resizeImg = Img.scaled(self.size.width(), self.size.height(), Qt.KeepAspectRatio)
-            #self.sendImage.emit(resizeImg)
+            img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            #cv2.imshow("단속화면", frame)
+            Img = QImage(img.data, w, h, bytesPerLine, QImage.Format_RGB888)
+            resizeImg = Img.scaled(self.size.width(), self.size.height(), Qt.KeepAspectRatio)
+            self.sendImage.emit(resizeImg)
             time.sleep(0.01)
             if self.bThread == False:
                 break

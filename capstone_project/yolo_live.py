@@ -1,15 +1,12 @@
 
 import cv2
 import numpy as np
-from PyQt5 import QtCore, QtWidgets, QtGui
-
-class ShowVideo(QtCore,QObject):
 
 
 # 웹캠 신호 받기
 VideoSignal = cv2.VideoCapture(0)
 # YOLO 가중치 파일과 CFG 파일 로드
-YOLO_net = cv2.dnn.readNet("yolov4-custom_best.weights","yolov4-obj.cfg")
+YOLO_net = cv2.dnn.readNet("yolov4-custom_best.weights", "yolov4-obj.cfg")
 
 # YOLO NETWORK 재구성
 classes = []
@@ -64,10 +61,10 @@ while True:
 
             # 경계상자와 클래스 정보 이미지에 입력
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 5)
-            cv2.putText(frame, label + str(score), (x, y - 20), cv2.FONT_ITALIC, 0.5,
-            (255, 255, 255), 1)
+            cv2.putText(frame, label + str(score), (x, y - 20), cv2.FONT_ITALIC, 1,
+            (255, 255, 255), 3)
 
-    cam = cv2.resize(frame, dsize=(640, 480))
+    cam = cv2.resize(frame, dsize=(800, 500))
     cv2.imshow("test", cam)
 
     if cv2.waitKey(100) > 0:
