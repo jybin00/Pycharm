@@ -4,26 +4,30 @@ import os
 import re
 from PIL import Image, ImageOps, ImageFilter
 # edge enhance 후 그레이 스케일
-for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/test/IMG_6876.jpg'):
+for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/정상/*.jpg'):
     file, ext = os.path.splitext(infile)
-    print("infile:"+infile)
     im = Image.open(infile)
+    im = im.convert("RGB")
     new_im = im.filter(ImageFilter.EDGE_ENHANCE_MORE)
     new_im2 = new_im.convert('L')
     new_im2.save(file+"eng.jpg")
     im.close()
 # 라벨링 값 생성
-for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/test/IMG_6876.txt'):
+for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/test/140.txt'):
     file, ext = os.path.splitext(imfile)
-    print("infile:"+imfile)
     open_file = open(imfile, 'r')
-    read_file = open_file.read()
-    regex = re.compile('15')
-    read_file = regex.sub('0', read_file)
-    write_file = open(imfile, 'w')
-    write_file.write(read_file)
-    newfile = open(file+"eng.txt",'w')
-    newfile.write(read_file)
+    #write_file = open(file + ".txt", 'w')
+    newfile = open(file + "eng.txt", 'w')
+    while True:
+        line = open_file.readline()
+        if not line: break
+        print(line)
+        regex = re.compile('15')
+        changed_line = regex.sub('0', line, count=1)
+        print(changed_line)
+        #write_file.write(changed_line)
+        newfile.write(changed_line)
+    print(file + " done!")
     open_file.close()
     write_file.close()
     newfile.close()
@@ -31,32 +35,32 @@ for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
 print("그레이 스케일 증강 완료!")
 
 # 좌우 반전
-for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/test/IMG_6876.jpg'):
+for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/정상/*.jpg'):
     file, ext = os.path.splitext(infile)
-    print("infile:"+infile)
     im = Image.open(infile)
+    im = im.convert("RGB")
     new_im = ImageOps.mirror(im)
     new_im.save(file+"f.jpg")
     im.close()
 
-for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/test/IMG_6876.txt'):
+for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/정상/*.txt'):
     file, ext = os.path.splitext(imfile)
-    print("infile:"+imfile)
     open_file = open(imfile, 'r')
     # read_file = open_file.read()
     # print(read_file)
     newfile = open(file + "f.txt", 'w')
+    print(file + " open!")
     while True:
         line = open_file.readline()
         if not line: break
-        print(line)
-        regex = re.compile('15')
-        change_number = regex.sub('0', line)
-        print(change_number)
         new_line = (change_number[0:2] + str(round(1 - float(change_number[2:10]), 6)) + change_number[10:])
         newfile.write(new_line)
-        print(new_line)
+    print(file + " done!")
     newfile.close()
+    open_file.close()
+
+print("좌우 반전 이미지 증강 완료!")
+
     # while True:
     #     line2 = open_file.readline()
     #     if not line2: break
