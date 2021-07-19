@@ -4,9 +4,21 @@ import numpy as np
 
 
 # 웹캠 신호 받기
-VideoSignal = cv2.VideoCapture(0)
+video = '/Users/yubeenjo/Pycharm/capstone_project/IMG_6957 복사본.MOV'
+VideoSignal = cv2.VideoCapture(video)
 # YOLO 가중치 파일과 CFG 파일 로드
-YOLO_net = cv2.dnn.readNet("yolov4-custom_best.weights", "yolov4-obj.cfg")
+YOLO_net = cv2.dnn.readNet("yolov4-tiny-custom_best.weights", "yolov4-tiny-custom.cfg")
+
+# 재생할 파일의 넓이 얻기
+width = VideoSignal.get(cv2.CAP_PROP_FRAME_WIDTH)
+
+# 재생할 파일의 높이 얻기
+height = VideoSignal.get(cv2.CAP_PROP_FRAME_HEIGHT)
+
+# 재생할 파일의 프레임 레이트 얻기
+fps = VideoSignal.get(cv2.CAP_PROP_FPS)
+
+writer = cv2.VideoWriter("output.avi", cv2.VideoWriter_fourcc(*"DIVX"), fps, (int(width), int(height)))
 
 # YOLO NETWORK 재구성
 classes = []
@@ -18,6 +30,7 @@ output_layers = [layer_names[i[0] - 1] for i in YOLO_net.getUnconnectedOutLayers
 while True:
     # 웹캠 프레임
     ret, frame = VideoSignal.read()
+    if frame is None: break
     h, w, c = frame.shape
 
     # YOLO 입력
@@ -42,15 +55,15 @@ while True:
                 # Object detected
                 center_x = int(detection[0] * w)
                 center_y = int(detection[1] * h)
-                dw = int(detection[2] * 2*w/3)
-                dh = int(detection[3] * 2*h/3)
+                dw = int(detection[2] * w)
+                dh = int(detection[3] * 3*h/4)
                 # Rectangle coordinate
                 x = int(center_x - dw / 2)
                 y = int(center_y - dh / 2)
                 boxes.append([x, y, dw, dh])
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
-    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.8, 0.8)
+    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
 
 
     for i in range(len(boxes)):
@@ -64,8 +77,14 @@ while True:
             cv2.putText(frame, label + str(score), (x, y - 20), cv2.FONT_ITALIC, 1,
             (255, 255, 255), 3)
 
-    cam = cv2.resize(frame, dsize=(800, 500))
-    cv2.imshow("test", cam)
+    writer.write(frame)
 
-    if cv2.waitKey(100) > 0:
+    # cam = cv2.resize(frame, dsize=(800, 500))
+    cv2.imshow("test", frame)
+
+    if cv2.waitKey(1) == 27:
         break
+
+VideoSignal.release()
+writer.release()
+cv2.destroyAllWindows()
