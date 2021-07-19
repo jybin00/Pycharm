@@ -6,19 +6,19 @@ from PIL import Image, ImageOps, ImageFilter
 # edge enhance 후 그레이 스케일
 for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/정상/*.jpg'):
     file, ext = os.path.splitext(infile)
-    print(file + " converting,,,")
+    print(infile + " grey converting,,,")
     im = Image.open(infile)
     im = im.convert("RGB")
     new_im = im.filter(ImageFilter.EDGE_ENHANCE_MORE)
     new_im2 = new_im.convert('L')
     new_im2.save(file+"eng.jpg")
     im.close()
-    print(file + " finished!")
+    print(infile + " finished!")
 # 라벨링 값 생성
-for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/test/140.txt'):
+for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/정상/*.txt'):
     file, ext = os.path.splitext(imfile)
     open_file = open(imfile, 'r')
-    print(file + " open!")
+    print(imfile + " open!")
     newfile = open(file + "eng.txt", 'w')
     while True:
         line = open_file.readline()
@@ -38,32 +38,30 @@ for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
     open_file.close()
     write_file.close()
 
-    print(file + " done!")
+    print(imfile + " done!")
 
 print("그레이 스케일 증강 완료!")
 
 # 좌우 반전
 for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/정상/*.jpg'):
     file, ext = os.path.splitext(infile)
-    print(file + " converting...")
+    print(infile + " flip converting...")
     im = Image.open(infile)
     im = im.convert("RGB")
     new_im = ImageOps.mirror(im)
     new_im.save(file+"f.jpg")
     im.close()
-    print(file + " finished!")
+    print(infile + " finished!")
 
 for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/정상/*.txt'):
     file, ext = os.path.splitext(imfile)
     open_file = open(imfile, 'r')
-    # read_file = open_file.read()
-    # print(read_file)
     newfile = open(file + "f.txt", 'w')
-    print(file + " open!")
+    print(imfile + " open!")
     while True:
         line = open_file.readline()
         if not line: break
-        new_line = (change_number[0:2] + str(round(1 - float(change_number[2:10]), 6)) + change_number[10:])
+        new_line = (line[0:2] + str(round(1 - float(line[2:10]), 6)) + line[10:])
         newfile.write(new_line)
     print(file + " done!")
     newfile.close()
@@ -71,19 +69,6 @@ for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
 
 print("좌우 반전 이미지 증강 완료!")
 
-    # while True:
-    #     line2 = open_file.readline()
-    #     if not line2: break
-    #     print(line2)
-    #     new_line = (line[0:2] + str(1 - float(line[2:10])) + line[10:])
-    #     print(new_line)
-    # new_line=(read_file[0:2]+str(1-float(read_file[2:10]))+read_file[10:])
-    # regex = re.compile('15')
-    # read_file = regex.sub('0', read_file)
-    # write_file = open(imfile, 'w')
-    # write_file.write(read_file)
-    # newfile = open(file+"f.txt", 'w')
-    # newfile.write(new_line)
 print("all done")
 
 # 이미지 불러오기
