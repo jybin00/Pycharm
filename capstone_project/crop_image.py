@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 import glob
 
+global counter
+counter = 0
 # YOLO 가중치 파일과 CFG 파일 로드
 YOLO_net = cv2.dnn.readNet("yolov4-tiny-custom_best.weights", "yolov4-tiny-custom.cfg")
 
@@ -14,17 +16,13 @@ with open("obj.names", "r") as f:
 layer_names = YOLO_net.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in YOLO_net.getUnconnectedOutLayers()]
 
-for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/백업/3.jpg'):
+for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/백백업/*.jpg'):
+    counter += 1
     file, ext = os.path.splitext(infile)
     frame = cv2.imread(infile)
-    frame = cv2.resize(frame, None, fx=1, fy=1)
+    frame = cv2.resize(frame, None, fx=2, fy=2)
     print(type(frame))
     print(file)
-    h, w, c = frame.shape
-    blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0),
-                                 True, crop=False)
-    YOLO_net.setInput(blob)
-    outs = YOLO_net.forward(output_layers)
 
     # 웹캠 프레임
     if frame is None: break
@@ -64,18 +62,7 @@ for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
                 crop_img = frame[y:y + dh, x:x + dw]
     indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
 
-    for i in range(len(boxes)):
-        if i in indexes:
-            x, y, w, h = boxes[i]
-            label = str(classes[class_ids[i]])
-            score = '%2f' %confidences[i]
-
-            # 경계상자와 클래스 정보 이미지에 입력
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 5)
-            cv2.putText(frame, label + str(score), (x, y - 20), cv2.FONT_ITALIC, 1,
-            (255, 255, 255), 3)
-            print(x, y, w, h)
-    cv2.imshow("test", crop_img)
+    cv2.imwrite('crop'+str(counter)+'.jpg', crop_img)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()

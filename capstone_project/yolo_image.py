@@ -75,7 +75,7 @@ binarized = cv2.adaptiveThreshold(sharpen, 256, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
 
 # cv2.imshow('contrast', contrast)
 # cv2.imshow('gray', gray)
-dst = np.hstack((gray, sharpen, binarized, img2, denoised, sharpen2))
+dst = np.hstack((sharpen, binarized, img2, denoised, sharpen2))
 cv2.imshow('img', dst)
 # indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
 
