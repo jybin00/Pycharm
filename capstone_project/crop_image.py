@@ -21,7 +21,6 @@ for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
     file, ext = os.path.splitext(infile)
     frame = cv2.imread(infile)
     frame = cv2.resize(frame, None, fx=2, fy=2)
-    print(type(frame))
     print(file)
 
     # 웹캠 프레임
@@ -33,10 +32,6 @@ for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
     True, crop=False)
     YOLO_net.setInput(blob)
     outs = YOLO_net.forward(output_layers)
-
-    class_ids = []
-    confidences = []
-    boxes = []
 
     for out in outs:
 
@@ -56,13 +51,17 @@ for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
                 # Rectangle coordinate
                 x = int(center_x - dw / 2)
                 y = int(center_y - dh / 2)
-                boxes.append([x, y, dw, dh])
-                confidences.append(float(confidence))
-                class_ids.append(class_id)
-                crop_img = frame[y:y + dh, x:x + dw]
-    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
+                if y + dh > h or x + dw > w or x < 0 or y < 0:
+                    crop_img = frame
+                else:
+                    crop_img = frame[y:y + dh, x:x + dw]
+                print(x, y, dw, dh)
+                print(len(crop_img))
 
-    cv2.imwrite('crop'+str(counter)+'.jpg', crop_img)
+    if len(crop_img) > 11:
+        cv2.imwrite(file + '_crop.jpg', crop_img)
+    else:
+        pass
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
