@@ -4,14 +4,14 @@ import os
 import re
 from PIL import Image, ImageOps, ImageFilter
 # edge enhance 후 그레이 스케일
-for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/crop/*.jpg'):
+for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/blur2/*.jpg'):
     file, ext = os.path.splitext(infile)
     print(infile + " grey converting,,,")
     im = Image.open(infile)
     im = im.convert("RGB")
-    new_im = im.filter(ImageFilter.EDGE_ENHANCE_MORE)
-    new_im2 = new_im.convert('L')
-    new_im2.save(file+"eng.jpg")
+    # new_im = im.filter(ImageFilter.EDGE_ENHANCE_MORE)
+    new_im2 = im.convert('L')
+    new_im2.save(file+".jpg")
     im.close()
     print(infile + " finished!")
 # 라벨링 값 생성
