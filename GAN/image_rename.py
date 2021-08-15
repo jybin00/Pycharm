@@ -4,12 +4,12 @@ from PIL import Image
 
 files = glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/모자이크/*.jpg')
 counter = 0
+print(len(files))
 
 for f in files:
     counter += 1
     img = Image.open(f)
-    img_resize = img.resize((254, 150))
     title, ext = os.path.splitext(f)
-    img_resize.save('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/모자이크/' + str(counter) + ext)
-    print(str(counter/574*100)+"% completed")
+    img.save('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/fake2/' + str(counter) + ext)
+    print(str(counter/294*100)+"% completed")
     img.close()

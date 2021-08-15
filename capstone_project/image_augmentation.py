@@ -4,16 +4,16 @@ import os
 import re
 from PIL import Image, ImageOps, ImageFilter
 # edge enhance 후 그레이 스케일
-for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/blur2/*.jpg'):
-    file, ext = os.path.splitext(infile)
-    print(infile + " grey converting,,,")
-    im = Image.open(infile)
-    im = im.convert("RGB")
-    # new_im = im.filter(ImageFilter.EDGE_ENHANCE_MORE)
-    new_im2 = im.convert('L')
-    new_im2.save(file+".jpg")
-    im.close()
-    print(infile + " finished!")
+# for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/clean/*.jpg'):
+#     file, ext = os.path.splitext(infile)
+#     print(infile + " grey converting,,,")
+#     im = Image.open(infile)
+#     # im = im.convert("RGB")
+#     # new_im = im.filter(ImageFilter.EDGE_ENHANCE_MORE)
+#     new_im2 = im.convert('L')
+#     new_im2.save(file+".jpg")
+#     new_im2.close()
+#     print(infile + " finished!")
 # 라벨링 값 생성
 # for imfile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/정상/*.txt'):
 #     file, ext = os.path.splitext(imfile)
@@ -40,16 +40,16 @@ for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/
 #
 #     print(imfile + " done!")
 
-print("그레이 스케일 증강 완료!")
+# print("그레이 스케일 증강 완료!")
 
 # 좌우 반전
-# for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/정상/*.jpg'):
+# for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/fake2/*.jpg'):
 #     file, ext = os.path.splitext(infile)
 #     print(infile + " flip converting...")
 #     im = Image.open(infile)
-#     im = im.convert("RGB")
+#     im = im.convert("L")
 #     new_im = ImageOps.mirror(im)
-#     new_im.save(file+"f.jpg")
+#     new_im.save(file+"987.jpg")
 #     im.close()
 #     print(infile + " finished!")
 #
@@ -69,7 +69,22 @@ print("그레이 스케일 증강 완료!")
 #
 # print("좌우 반전 이미지 증강 완료!")
 
-print("all done")
+# 상하반전
+# counter = 0
+# for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/fake2/*.jpg'):
+#     file, ext = os.path.splitext(infile)
+#     counter += 1
+#     print(infile + " flip converting...")
+#     im = Image.open(infile)
+#     # im = im.convert("RGB")
+#     new_im = im.transpose(Image.FLIP_TOP_BOTTOM)
+#     new_im.save(file+"987.jpg")
+#     im.close()
+#     print(str(counter / 588 * 100) + "% completed")
+#     print(infile + " finished!")
+#
+# print("all done")
+
 
 # 이미지 불러오기
 
