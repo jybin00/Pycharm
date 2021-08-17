@@ -5,7 +5,7 @@ import glob
 import os
 from PIL import Image
 def canny():
-    for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/fake/*.jpg'):
+    for infile in glob.glob('/Users/yubeenjo/Desktop/29.jpeg'):
         file, ext = os.path.splitext(infile)
         img = cv2.imread(infile)
         blur = cv2.GaussianBlur(img, (3, 3), 0)
