@@ -11,7 +11,7 @@ font = cv2.FONT_HERSHEY_PLAIN
 
 def binary_image():
     global counter
-    for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/조작/clean 복사본/*.jpg'):
+    for infile in glob.glob('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/조작/clean bounding box/1.jpg'):
         file, ext = os.path.splitext(infile)
         f = open(file + '.txt', 'w')
         f.write("아이글 화이팅~ \n\n")
@@ -54,7 +54,7 @@ def binary_image():
             x, y, w, h = cv2.boundingRect(c)
 
             # Make sure contour area is large enough
-            if (cv2.contourArea(c)) > 200 and cv2.contourArea(c) < 2500:
+            if (cv2.contourArea(c)) > 1:
                 # crop_image[counter] = img[y: y + h, x: x + w]
                 # cv2.imshow(str(counter), crop_image[counter])
                 cv2.rectangle(img, (x, y), (x + w, y + h), (10, 200, 10), 0 )
