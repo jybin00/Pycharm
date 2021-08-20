@@ -59,7 +59,7 @@ def kakao_ocr(image_path: str, appkey: str):
 
 def main():
     # 이미지 경로 지정
-    image_path = '/Users/yubeenjo/Desktop/Capstone/오토바이번호판/resize/8.jpg'
+    image_path = '/Users/yubeenjo/Desktop/thresh.jpg'
     # kakao Developers에서 API 키
     appkey = '128c2166d789c9f1a2ae79a9e5dfcc22'
 
@@ -69,7 +69,7 @@ def main():
         print("원본 대신 리사이즈된 이미지를 사용합니다.")
 
     output = kakao_ocr(image_path, appkey).json()
-    #print("[OCR] output:\n{}\n".format(json.dumps(output, sort_keys=True, indent=2, ensure_ascii=False)))
+    print("[OCR] output:\n{}\n".format(json.dumps(output, sort_keys=True, indent=2, ensure_ascii=False)))
     temp = output['result']
 
     try :
