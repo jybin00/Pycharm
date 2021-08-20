@@ -15,7 +15,7 @@ def binary_image():
         file, ext = os.path.splitext(infile)
         img = cv2.imread(infile, cv2.IMREAD_GRAYSCALE)
         img = cv2.GaussianBlur(img, (5, 5), 0, 0)
-        clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8, 8))
+        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
         img = clahe.apply(img)
         img2 = img.copy()
         # img = cv2.equalizeHist(img)
