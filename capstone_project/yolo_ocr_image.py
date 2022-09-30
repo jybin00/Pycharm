@@ -47,7 +47,7 @@ ocr = ''
 out1 = ''
 out2 = ''
 h1 = []
-img = cv2.imread("/Users/yubeenjo/Desktop/Capstone/오토바이번호판/백업/29.jpg")
+img = cv2.imread("/Users/yubeenjo/Downloads/KakaoTalk_Photo_2021-10-12-16-28-04.jpeg")
 img = cv2.resize(img, None, fx=3, fy=3)
 height, width, channels = img.shape
 

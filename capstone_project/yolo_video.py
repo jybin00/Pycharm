@@ -4,7 +4,7 @@ import numpy as np
 
 
 # 웹캠 신호 받기
-video = '/Users/yubeenjo/Pycharm/capstone_project/IMG_6957 복사본.MOV'
+video = '/Users/yubeenjo/Downloads/IMG_7393.MOV'
 VideoSignal = cv2.VideoCapture(video)
 # YOLO 가중치 파일과 CFG 파일 로드
 YOLO_net = cv2.dnn.readNet("yolov4-tiny-custom_best.weights", "yolov4-tiny-custom.cfg")
@@ -18,7 +18,7 @@ height = VideoSignal.get(cv2.CAP_PROP_FRAME_HEIGHT)
 # 재생할 파일의 프레임 레이트 얻기
 fps = VideoSignal.get(cv2.CAP_PROP_FPS)
 
-writer = cv2.VideoWriter("output.avi", cv2.VideoWriter_fourcc(*"DIVX"), fps, (int(width), int(height)))
+writer = cv2.VideoWriter("output2.avi", cv2.VideoWriter_fourcc(*"DIVX"), fps, (int(width), int(height)))
 
 # YOLO NETWORK 재구성
 classes = []
@@ -70,14 +70,14 @@ while True:
         if i in indexes:
             x, y, w, h = boxes[i]
             label = str(classes[class_ids[i]])
-            score = '%2f' %confidences[i]
+            score = round(confidences[i], 3)
 
             # 경계상자와 클래스 정보 이미지에 입력
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 5)
-            cv2.putText(frame, label + str(score), (x, y - 20), cv2.FONT_ITALIC, 1,
+            cv2.putText(frame, label + ' ' + str(score), (x, y - 20), cv2.FONT_ITALIC, 1,
             (255, 255, 255), 3)
 
-    writer.write(frame)
+    #writer.write(frame)
 
     # cam = cv2.resize(frame, dsize=(800, 500))
     cv2.imshow("test", frame)

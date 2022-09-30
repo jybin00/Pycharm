@@ -34,13 +34,12 @@ def kakao_ocr(image_path: str, appkey: str):
     image = cv2.imread(image_path)
     jpeg_image = cv2.imencode(".jpg", image)[1]
     data = jpeg_image.tobytes()
-    # data = image.tobytes()
 
     return requests.post(API_URL, headers=headers, files={"image": data})
 
 
 # 저장을 위한 비디오
-video = '/Users/yubeenjo/Downloads/IMG_7393.MOV'
+video = '/Users/yubeenjo/Downloads/IMG_1730.MOV'
 VideoSignal = cv2.VideoCapture(video)
 
 # 재생할 파일의 넓이 얻기
@@ -52,7 +51,7 @@ height = VideoSignal.get(cv2.CAP_PROP_FRAME_HEIGHT)
 # 재생할 파일의 프레임 레이트 얻기
 fps = VideoSignal.get(cv2.CAP_PROP_FPS)
 
-writer = cv2.VideoWriter("output2.avi", cv2.VideoWriter_fourcc(*"DIVX"), fps, (int(width), int(height)))
+writer = cv2.VideoWriter("/Users/yubeenjo/Desktop/output_1730.avi", cv2.VideoWriter_fourcc(*"DIVX"), fps, (int(width), int(height)))
 
 # YOLO 가중치 파일과 CFG 파일 로드
 YOLO_net = cv2.dnn.readNet("yolov4-tiny-custom_best.weights", "yolov4-tiny-custom.cfg")
@@ -86,6 +85,7 @@ while True:
             scores = detection[5:]
             class_id = np.argmax(scores)
             confidence = scores[class_id]
+            print(confidence)
 
             if confidence > 0.6:
                 print("ih")
@@ -124,11 +124,11 @@ while True:
                     if x2 > 1 and y2 > 1:
                         crop_img = cv2.resize(crop_img, (0, 0), fx=3, fy=3)
                         crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
-                        cv2.imwrite('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/' + str(i) + '.jpg', crop_img)
+                        cv2.imwrite('/Users/yubeenjo/Desktop/' + str(i) + '.jpg', crop_img)
             if int(time.time()) % 3 is 0:
                 appkey = '128c2166d789c9f1a2ae79a9e5dfcc22'
                 if x is not 0:
-                    image_path = '/Users/yubeenjo/Desktop/Capstone/오토바이번호판/' + str(i) + '.jpg'
+                    image_path = '/Users/yubeenjo/Desktop/' + str(i) + '.jpg'
                     output = kakao_ocr(image_path, appkey).json()
                     temp = output['result']
 
@@ -200,7 +200,7 @@ while True:
             score = round(confidences[i], 2)
 
             # 경계상자와 클래스 정보 이미지에 입력
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 20, 255), 4)
+            cv2.rectangle(frame, (x, y), (x + dw, y + dh), (0, 20, 255), 4)
             frame = Image.fromarray(frame)
             draw = ImageDraw.Draw(frame)
             out1 = re.sub('[a-zA-z]', '', out1)

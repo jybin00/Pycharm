@@ -68,14 +68,13 @@ while True:
     boxes = []
 
     for out in outs:
-
         for detection in out:
-
             scores = detection[5:]
             class_id = np.argmax(scores)
             confidence = scores[class_id]
 
             if confidence > 0.6:
+                print("ih")
                 # Object detected
                 center_x = int(detection[0] * w)
                 center_y = int(detection[1] * h)
@@ -104,11 +103,11 @@ while True:
                     if x2 > 1 and y2 > 1:
                         crop_img = cv2.resize(crop_img, (0, 0), fx=3, fy=3)
                         crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
-                        cv2.imwrite('/Users/yubeenjo/Desktop/Capstone/오토바이번호판/' + str(i) + '.jpg', crop_img)
+                        cv2.imwrite('/Users/yubeenjo/Desktop/' + str(i) + '.jpg', crop_img)
             if int(time.time()) % 3 is 0:
                 appkey = '128c2166d789c9f1a2ae79a9e5dfcc22'
                 if x is not 0:
-                    image_path = '/Users/yubeenjo/Desktop/Capstone/오토바이번호판/' + str(i) + '.jpg'
+                    image_path = '/Users/yubeenjo/Desktop/' + str(i) + '.jpg'
                     output = kakao_ocr(image_path, appkey).json()
                     temp = output['result']
 
